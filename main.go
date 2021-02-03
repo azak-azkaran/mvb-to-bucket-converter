@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"go.uber.org/zap"
@@ -34,14 +34,28 @@ func ReadArgs(args []string) string{
 	return args[1]
 }
 
-func ReadFile(filename string) ( error, *string ){
-	  content, err := ioutil.ReadFile(filename)
+func ReadFile(filename string) ( error, [][]string ){
+	file, err := os.Open(filename)
     if err != nil {
         Sugar.Error(err)
 				return err, nil
 			}
-		stuff := string(content)
-		return nil, &stuff
+
+	  reader := csv.NewReader(file)
+		reader.Comma = ';'
+		//reader.TrimLeadingSpace = true
+		//reader.FieldsPerRecord= 9
+		//reader.LazyQuotes = true
+		var content [][]string
+
+		content, err = reader.ReadAll()
+    if err != nil {
+        Sugar.Error(err)
+				return err, nil
+			}
+
+		content = content[12:]
+		return nil, content
 }
 
 func main() {

@@ -22,5 +22,6 @@ func TestReadFile(t *testing.T){
 	err,content := ReadFile("./test/testfile.csv")
 	assert.NoError(t,err)
 	assert.NotNil(t,content)
-	assert.True(t,len(*content) == 2)
+	assert.True(t,len(content) >= 2)
+	fmt.Println(content)
 }

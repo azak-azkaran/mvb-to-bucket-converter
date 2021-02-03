@@ -1,0 +1,28 @@
+Mainzer Volksbank eG;;;;;;;;
+;;;;;;;;
+Umsatzanzeige;;;;;;;;
+;;;;;;;;
+BLZ:;11111111;;Datum:;;;;;
+Konto:;111111111;;Uhrzeit:;;;;;
+Abfrage von:;AAAAAAA BBBBBBB;;Kontoinhaber:;;;;;
+;;;;;;;;
+Zeitraum:;;von:;04.01.21;;;;;
+Betrag in EUR:;;von:; ;;;;;
+Sortiert nach:;Buchungstag;absteigend;;;;;;
+;;;;;;;;
+Buchungstag;Valuta;Auftraggeber/Zahlungsempfänger;Empfänger/Zahlungspflichtiger;Vorgang/Verwendungszweck;Kundenreferenz;Währung;Umsatz; 
+01.02.21;01.02.21;BBBBBBB AAAAAAA;AAAAAAA BBBBBBB;"DAUERAUFTRAG
+Transfer blub /*DA-7* I
+BAN: DE22222222222222222222
+BIC: NTSCCCCCCCC";;EUR;200;S
+01.02.21;01.02.21;AAAAAAA BBBBBBB;AMAZON PAYMENTS EUROPE S.C.A.;"SEPA-BASISLASTSCHR.
+111-2222222-3333333 AMZN Mk
+tp DE YYYYYYYYYYYYYYYY EREF
+: YYYYYYYYYYYYYYYY MREF: QQ
+QQQQQ(Q,GGGGGGGGGGGGGGGGGGG
+G CRED: DE4444444444444444
+IBAN: DE3333333333333333333
+6 BIC: TTTTTTTT";;EUR;39,05;S
+;;;;;;;;
+04.01.21;;;;;Anfangssaldo;EUR;1.000,00;H
+01.02.21;;;;;Endsaldo;EUR;1.239,05;H
