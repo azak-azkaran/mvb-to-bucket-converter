@@ -34,6 +34,14 @@ func ReadArgs(args []string) string{
 	return args[1]
 }
 
+func Convert(content [][]string) [][]string{
+	var result [][]string
+	for _,line := range content{
+		result = append(result, line)
+	}
+	return content
+}
+
 func ReadFile(filename string) ( error, [][]string ){
 	file, err := os.Open(filename)
     if err != nil {
@@ -43,9 +51,6 @@ func ReadFile(filename string) ( error, [][]string ){
 
 	  reader := csv.NewReader(file)
 		reader.Comma = ';'
-		//reader.TrimLeadingSpace = true
-		//reader.FieldsPerRecord= 9
-		//reader.LazyQuotes = true
 		var content [][]string
 
 		content, err = reader.ReadAll()
