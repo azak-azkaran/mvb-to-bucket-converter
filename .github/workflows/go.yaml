@@ -26,22 +26,22 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2  
       with:
-        path: src/github.com/azak-azkaran/k8s-config
+        path: src/github.com/azak-azkaran/mvb-to-bucket-converter
       
     - name: Make Coverage Reports
       run: make coverage
-      working-directory: src/github.com/azak-azkaran/k8s-config
+      working-directory: src/github.com/azak-azkaran/mvb-to-bucket-converter
       
     - name: Update SonarProject Version
       run: echo "sonar.projectVersion=`git describe --tags --abbrev=0`" >> sonar-project.properties
-      working-directory: src/github.com/azak-azkaran/k8s-config
+      working-directory: src/github.com/azak-azkaran/mvb-to-bucket-converter
       
     - name: SonarCloud Scan
       # You may pin to the exact commit or the version.
       # uses: SonarSource/sonarcloud-github-action@f4c6e4d91ea9785ec823eaeed459042606123402
       uses: SonarSource/sonarcloud-github-action@v1.4
       with:
-        projectBaseDir: src/github.com/azak-azkaran/k8s-config
+        projectBaseDir: src/github.com/azak-azkaran/mvb-to-bucket-converter
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,4 +55,4 @@ jobs:
       env:
         COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: goveralls -coverprofile=cover.out -service="github"
-      working-directory: src/github.com/azak-azkaran/k8s-config
+      working-directory: src/github.com/azak-azkaran/mvb-to-bucket-converter
