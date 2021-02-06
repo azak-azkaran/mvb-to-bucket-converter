@@ -50,7 +50,6 @@ func HandleMemo(line string) string{
 
 func Convert(content [][]string) [][]string{
 	var result [][]string
-	content = content[1:]
 	result = append(result, []string{"Date","Payee","Memo","Amount"})
 	for _,line := range content{
 		var amount string
@@ -87,7 +86,7 @@ func ReadFile(filename string) ( error, [][]string ){
 				return err, nil
 			}
 
-		content = content[12:]
+		content = content[13:]
 		content = content[:len(content)-3]
 		return nil, content
 }
