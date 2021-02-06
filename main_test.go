@@ -31,13 +31,15 @@ func TestConvert(t *testing.T){
 
 	content := [][]string{
 		{"01.02.21", "01.02.21", "AAAAAAA","AMAZON PAYMENTS EUROPE S.C.A.","SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk","","EUR 200","S"},
+		{"01.02.21", "01.02.21", "AAAAAAA","AMAZON PAYMENTS EUROPE S.C.A.","SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk","","EUR 200","H"},
 	}
 	result := Convert(content)
 	assert.NotEmpty(t,result)
-	assert.True(t,len(result) ==1)
+	assert.True(t,len(result) ==2)
 	assert.True(t,len(result[0]) ==4)
-	assert.True(t,result[0][0] == "01.02.21")
-	assert.True(t,result[0][1] == "MVB")
-	assert.True(t,result[0][1] == "111-2222222-3333333 AMZN Mk")
-	assert.True(t,result[0][3] == "-200")
+	assert.Equal(t, "01.02.21",result[0][0])
+	assert.Equal(t , "MVB",result[0][1])
+	assert.Equal(t , "111-2222222-3333333 AMZN Mk",result[0][2])
+	assert.Equal(t , "-200",result[0][3])
+	assert.Equal(t , "200",result[1][3])
 }
