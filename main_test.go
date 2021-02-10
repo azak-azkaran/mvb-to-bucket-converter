@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -43,4 +44,22 @@ func TestConvert(t *testing.T){
 	assert.Equal(t , "111-2222222-3333333 AMZN Mk",result[1][2])
 	assert.Equal(t , "-200",result[1][3])
 	assert.Equal(t , "200",result[2][3])
+}
+
+func TestWriteFile(t *testing.T) {
+	fmt.Println("Testing WriteFile...")
+	filename := "./test/newfile.csv"
+	t.Cleanup(func() {
+		os.Remove(filename)
+	})
+
+	_, err := os.Stat(filename)
+	assert.True(t, os.IsNotExist(err))
+
+	content := [][]string{
+		{"01.02.21", "01.02.21", "AAAAAAA","AMAZON PAYMENTS EUROPE S.C.A.","SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk","","EUR","200","S"},
+	}
+	WriteFile(filename, content)
+	_, err = os.Stat(filename)
+	assert.NoError(t,err)
 }
