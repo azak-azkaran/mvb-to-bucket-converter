@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -52,16 +53,18 @@ func Convert(content [][]string) [][]string{
 	var result [][]string
 	result = append(result, []string{"Date","Payee","Memo","Amount"})
 	for _,line := range content{
+
+		size := len(line)
 		var amount string
-		if line[8] == "S"{
+		if line[size-1] == "S"{
 			amount = "-"
 		}
-		amount += line[7]
+		amount += line[size-2]
 
 		test := []string{
 			line[0],
 			"MVB",
-			HandleMemo(line[4]),
+			HandleMemo(line[size-5]),
 			amount,
 		}
 		result = append(result, test)
@@ -76,7 +79,14 @@ func ReadFile(filename string) ( error, [][]string ){
 				return err, nil
 			}
 
-	  reader := csv.NewReader(file)
+	  bytes, err := ioutil.ReadAll(file)
+		str := strings.Split(string(bytes),"\n")
+		str = str[13:len(str)-4]
+
+		joined := strings.Join(str, "\n")
+
+		stringreader := strings.NewReader(joined)
+		reader := csv.NewReader(stringreader)
 		reader.Comma = ';'
 		var content [][]string
 
@@ -86,8 +96,6 @@ func ReadFile(filename string) ( error, [][]string ){
 				return err, nil
 			}
 
-		content = content[13:]
-		content = content[:len(content)-3]
 		return nil, content
 }
 
