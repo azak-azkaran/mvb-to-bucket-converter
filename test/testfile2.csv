@@ -1,0 +1,20 @@
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Umsatzanzeige;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+BLZ:;11111111;;Datum:;03.12.2021;;;;;;;;;;;;
+Konto:;11111111;;Uhrzeit:;12:08:19;;;;;;;;;;;;
+Abfrage von:;Name Nachname;;Kontoinhaber:;Vorname Nachname;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Zeitraum:;;von:;17.11.2021;bis:;03.12.2021;;;;;;;;;;;
+Betrag in Euro:;;von:;;bis:;;;;;;;;;;;;
+Primanotanummer:;;von:;;bis:;;;;;;;;;;;;
+Textschlüssel:;;von:;;bis:;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Buchungstag;Valuta;Textschlüssel;Primanota;Zahlungsempfänger;ZahlungsempfängerKto;ZahlungsempfängerIBAN;ZahlungsempfängerBLZ;ZahlungsempfängerBIC;Vorgang/Verwendungszweck;Kundenreferenz;Währung;Umsatz;Soll/Haben
+03.12.2021;03.12.2021;05 SEPA-BASISLASTSCHR.;xxx;PayPal (Europe) S.a.r.l. et Cie., S.C.A.;;;;;Lastschrift PP.XXXX.PP . Patreon, Ihr Einkauf bei Patreon EREF:  PP.XXXX.PP PAYPAL MREF:  CRED: LUxxxxxxx IBAN: DExxxxxxxxxx BIC: DEUTDEFF;xxxxxxxxxx PP.XXXX.PP PAYPAL;EUR;4,41;S
+;;;;;;;;;;;;;
+17.11.2021;;;;;;;;;;Anfangssaldo;EUR;204,41;H
+03.12.2021;;;;;;;;;;Endsaldo;EUR;200,00;H

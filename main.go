@@ -29,34 +29,31 @@ func LogInit() *zap.SugaredLogger {
 	return logger.Sugar()
 }
 
-func ReadArgs(args []string) string{
-	if args == nil || len(args)== 1{
+func ReadArgs(args []string) string {
+	if args == nil || len(args) == 1 {
 		return ""
 	}
 	return args[len(args)-1]
 }
 
-func HandleMemo(line string) string{
-	var memo string
-	split := strings.Split(line, "\n")
-	if len(split) == 0 {
-		return line
-	}
+func HandleMemo(line string) string {
+	memo := strings.ReplaceAll(line, "\n", " ")
 
-	for _, l := range(split[1:]){
-		memo = memo + l
-	}
+	memo = strings.ReplaceAll(memo, "SEPA-BASISLASTSCHR. ", "")
+	memo = strings.ReplaceAll(memo, "Lastschrift ", "")
+	memo = strings.ReplaceAll(memo, "IBAN: DE27510900000044145103", "book-n-drive mobilitaetssysteme GmbH")
+
 	return memo
 }
 
-func Convert(content [][]string) [][]string{
+func Convert(content [][]string, memo_column int) [][]string {
 	var result [][]string
-	result = append(result, []string{"Date","Payee","Memo","Amount"})
-	for _,line := range content{
+	result = append(result, []string{"Date", "Payee", "Memo", "Amount"})
+	for _, line := range content {
 
 		size := len(line)
 		var amount string
-		if line[size-1] == "S"{
+		if line[size-1] == "S" {
 			amount = "-"
 		}
 		amount += line[size-2]
@@ -64,7 +61,7 @@ func Convert(content [][]string) [][]string{
 		test := []string{
 			line[0],
 			"MVB",
-			HandleMemo(line[size-5]),
+			HandleMemo(line[size-memo_column]),
 			amount,
 		}
 		result = append(result, test)
@@ -72,34 +69,42 @@ func Convert(content [][]string) [][]string{
 	return result
 }
 
-func ReadFile(filename string) ( error, [][]string ){
+func ReadFile(filename string) (error, [][]string, int) {
 	file, err := os.Open(filename)
-    if err != nil {
-        Sugar.Error(err)
-				return err, nil
-			}
+	if err != nil {
+		Sugar.Error(err)
+		return err, nil, 0
+	}
 
-	  bytes, err := ioutil.ReadAll(file)
-		str := strings.Split(string(bytes),"\n")
-		str = str[13:len(str)-4]
+	bytes, err := ioutil.ReadAll(file)
+	str := strings.Split(string(bytes), "\n")
+	var memo_column int
 
-		joined := strings.Join(str, "\n")
+	if strings.Index(str[12], "Buchungstag") == 0 {
+		str = str[13 : len(str)-4]
+		memo_column = 5
+	} else {
+		str = str[16 : len(str)-4]
+		memo_column = 5
+	}
 
-		stringreader := strings.NewReader(joined)
-		reader := csv.NewReader(stringreader)
-		reader.Comma = ';'
-		var content [][]string
+	joined := strings.Join(str, "\n")
 
-		content, err = reader.ReadAll()
-    if err != nil {
-        Sugar.Error(err)
-				return err, nil
-			}
+	stringreader := strings.NewReader(joined)
+	reader := csv.NewReader(stringreader)
+	reader.Comma = ';'
+	var content [][]string
 
-		return nil, content
+	content, err = reader.ReadAll()
+	if err != nil {
+		Sugar.Error(err)
+		return err, nil, 0
+	}
+
+	return nil, content, memo_column
 }
 
-func WriteFile(filename string, content [][]string) error{
+func WriteFile(filename string, content [][]string) error {
 	Sugar.Info("Writing file to: ", filename)
 	file, err := os.Create(filename)
 	if err != nil {
@@ -107,7 +112,7 @@ func WriteFile(filename string, content [][]string) error{
 		return err
 	}
 
-	w:= csv.NewWriter(file)
+	w := csv.NewWriter(file)
 	w.WriteAll(content)
 	if w.Error() != nil {
 		Sugar.Error(err)
@@ -119,15 +124,15 @@ func WriteFile(filename string, content [][]string) error{
 func main() {
 	Sugar.Info("Hello World")
 	filename := ReadArgs(os.Args)
-	err, content := ReadFile(filename)
+	err, content, memo_column := ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
-	err = WriteFile(filename + "_converted.csv", Convert( content ))
+	err = WriteFile(filename+"_converted.csv", Convert(content, memo_column))
 	if err != nil {
 		panic(err)
 	}
-	err = WriteFile(filename + "_striped.csv", content )
+	err = WriteFile(filename+"_striped.csv", content)
 	if err != nil {
 		panic(err)
 	}
