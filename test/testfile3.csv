@@ -1,0 +1,2 @@
+Bezeichnung Auftragskonto;IBAN Auftragskonto;BIC Auftragskonto;Bankname Auftragskonto;Buchungstag;Valutadatum;Name Zahlungsbeteiligter;IBAN Zahlungsbeteiligter;BIC (SWIFT-Code) Zahlungsbeteiligter;Buchungstext;Verwendungszweck;Betrag;Waehrung;Saldo nach Buchung;Bemerkung;Kategorie;Steuerrelevant;Glaeubiger ID;Mandatsreferenz
+MVB-Onlinekonto ePostfach;000000;MVBMDE55XXX;MAINZER VOLKSBANK;03.05.2022;03.05.2022;AMAZON PAYMENTS EUROPE S.C.A.;;;SEPA-BASISLASTSCHR.;101-2020202-3030303 AMZN Mktp DE;-37,99;EUR;3000;;;;DE94ZZZ11111111111;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
