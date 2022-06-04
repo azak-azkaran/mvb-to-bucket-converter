@@ -23,18 +23,20 @@ func TestReadArgs(t *testing.T) {
 func TestReadFile(t *testing.T) {
 	fmt.Println("Testing ReadFiles...")
 
-	err, content, memo := ReadFile("./test/testfile.csv")
+	err, content, memo, value := ReadFile("./test/testfile.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 2)
 	assert.Equal(t, 5, memo)
+	assert.Equal(t, 2, value)
 	fmt.Println(content)
 
-	err, content, memo = ReadFile("./test/testfile2.csv")
+	err, content, memo,value = ReadFile("./test/testfile2.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 1)
 	assert.Equal(t, 5, memo)
+	assert.Equal(t, 2, value)
 	fmt.Println(content)
 }
 
@@ -45,7 +47,7 @@ func TestConvert(t *testing.T) {
 		{"01.02.21", "01.02.21", "AAAAAAA", "AMAZON PAYMENTS EUROPE S.C.A.", "SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk", "", "EUR", "200", "S"},
 		{"02.02.21", "02.02.21", "AAAAAAA", "AMAZON PAYMENTS EUROPE S.C.A.", "SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk", "", "EUR", "200", "H"},
 	}
-	result := Convert(content, 5)
+	result := Convert(content, 5, 2)
 	fmt.Println(result)
 	assert.NotEmpty(t, result)
 	assert.True(t, len(result) == 3)
@@ -74,7 +76,7 @@ func TestWriteFile(t *testing.T) {
 	assert.FileExists(t, filename)
 }
 
-func TestMain(t *testing.T) {
+func TestMainTest1(t *testing.T) {
 	fmt.Println("Testing Main...")
 	t.Cleanup(func() {
 		os.Remove("./test/testfile.csv_converted.csv")
@@ -123,6 +125,14 @@ func TestMain(t *testing.T) {
 	assert.Equal(t, "S", content[0][8])
 	assert.Equal(t, "39,05", content[1][7])
 	assert.Equal(t, "S", content[1][8])
+	}
+
+	func TestMainTest2(t *testing.T) {
+	fmt.Println("Testing2 Main...")
+	t.Cleanup(func() {
+		os.Remove("./test/testfile2.csv_converted.csv")
+		os.Remove("./test/testfile2.csv_striped.csv")
+	})
 
 	os.Args = []string{
 		"mvb-to-bucket-converter",
@@ -133,12 +143,12 @@ func TestMain(t *testing.T) {
 	assert.FileExists(t, "./test/testfile2.csv_converted.csv")
 	assert.FileExists(t, "./test/testfile2.csv_striped.csv")
 
-	file, err = os.Open("./test/testfile2.csv_converted.csv")
+	file, err := os.Open("./test/testfile2.csv_converted.csv")
 	require.NoError(t, err)
-	reader = csv.NewReader(file)
+	reader := csv.NewReader(file)
 	require.NotNil(t, reader)
 	require.NoError(t, err)
-	content, err = reader.ReadAll()
+	content, err := reader.ReadAll()
 	require.NoError(t, err)
 	assert.Len(t, content, 2)
 	assert.Len(t, content[0], 4)
@@ -149,4 +159,39 @@ func TestMain(t *testing.T) {
 
 	assert.Equal(t, "-4,41", content[1][3])
 	assert.True(t, strings.Contains(content[1][2], "Patreon"), "Message: "+content[1][2])
+	}
+
+	func TestMainTest3(t *testing.T) {
+	fmt.Println("Testing3 Main...")
+	t.Cleanup(func() {
+		os.Remove("./test/testfile3.csv_converted.csv")
+		os.Remove("./test/testfile3.csv_striped.csv")
+	})
+
+
+	os.Args = []string{
+		"mvb-to-bucket-converter",
+		"./test/testfile3.csv",
+	}
+
+	main()
+	assert.FileExists(t, "./test/testfile3.csv_converted.csv")
+	assert.FileExists(t, "./test/testfile3.csv_striped.csv")
+
+	file, err := os.Open("./test/testfile3.csv_converted.csv")
+	require.NoError(t, err)
+	reader := csv.NewReader(file)
+	require.NotNil(t, reader)
+	require.NoError(t, err)
+	content, err := reader.ReadAll()
+	require.NoError(t, err)
+	assert.Len(t, content, 2)
+	assert.Len(t, content[0], 4)
+	assert.Len(t, content[1], 4)
+
+	assert.Equal(t, "Memo", content[0][2])
+	assert.Equal(t, "Amount", content[0][3])
+
+	assert.Equal(t, "-37,99", content[1][3])
+	assert.True(t, strings.Contains(content[1][2], "AMZN"), "Message: "+content[1][2])
 }
