@@ -46,7 +46,7 @@ func HandleMemo(line string) string {
 	return memo
 }
 
-func Convert(content [][]string, memo_column int, value_column int) [][]string {
+func Convert(content [][]string, date_column int,memo_column int, value_column int) [][]string {
 	var result [][]string
 	result = append(result, []string{"Date", "Payee", "Memo", "Amount"})
 	for _, line := range content {
@@ -59,7 +59,7 @@ func Convert(content [][]string, memo_column int, value_column int) [][]string {
 		amount += line[size-value_column]
 
 		test := []string{
-			line[0],
+			strings.Replace(line[date_column], ".","/", -1 ),
 			"MVB",
 			HandleMemo(line[size-memo_column]),
 			amount,
@@ -69,30 +69,34 @@ func Convert(content [][]string, memo_column int, value_column int) [][]string {
 	return result
 }
 
-func ReadFile(filename string) (error, [][]string, int, int) {
+func ReadFile(filename string) (error, [][]string, int, int, int) {
 	file, err := os.Open(filename)
 	if err != nil {
 		Sugar.Error(err)
-		return err, nil, 0, 0
+		return err, nil, 0, 0, 0
 	}
 
 	bytes, err := ioutil.ReadAll(file)
 	str := strings.Split(string(bytes), "\n")
 	var memo_column int
 	var value_column int 
+	var date_column int
 
 	if strings.Index(str[0], "Bezeichnung Auftragskonto") == 0{
 		str = str[1:]
 		memo_column = 9
 		value_column = 8
+		date_column = 4
 	} else if strings.Index(str[12], "Buchungstag") == 0 {
 		str = str[13 : len(str)-4]
 		memo_column = 5
 		value_column = 2
+		date_column = 0
 	} else {
 		str = str[16 : len(str)-4]
 		memo_column = 5
 		value_column = 2
+		date_column = 0
 	}
 
 	joined := strings.Join(str, "\n")
@@ -105,10 +109,10 @@ func ReadFile(filename string) (error, [][]string, int, int) {
 	content, err = reader.ReadAll()
 	if err != nil {
 		Sugar.Error(err)
-		return err, nil, 0, 0
+		return err, nil, 0, 0, 0
 	}
 
-	return nil, content, memo_column, value_column
+	return nil, content, date_column, memo_column, value_column
 }
 
 func WriteFile(filename string, content [][]string) error {
@@ -131,11 +135,11 @@ func WriteFile(filename string, content [][]string) error {
 func main() {
 	Sugar.Info("Hello World")
 	filename := ReadArgs(os.Args)
-	err, content, memo_column, value_column := ReadFile(filename)
+	err, content, date_column, memo_column, value_column := ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
-	err = WriteFile(filename+"_converted.csv", Convert(content, memo_column, value_column))
+	err = WriteFile(filename+"_converted.csv", Convert(content, date_column, memo_column, value_column))
 	if err != nil {
 		panic(err)
 	}

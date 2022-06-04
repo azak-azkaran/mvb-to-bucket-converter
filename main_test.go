@@ -23,7 +23,7 @@ func TestReadArgs(t *testing.T) {
 func TestReadFile(t *testing.T) {
 	fmt.Println("Testing ReadFiles...")
 
-	err, content, memo, value := ReadFile("./test/testfile.csv")
+	err, content, _ , memo, value := ReadFile("./test/testfile.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 2)
@@ -31,7 +31,7 @@ func TestReadFile(t *testing.T) {
 	assert.Equal(t, 2, value)
 	fmt.Println(content)
 
-	err, content, memo,value = ReadFile("./test/testfile2.csv")
+	err, content, _, memo,value = ReadFile("./test/testfile2.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 1)
@@ -47,12 +47,12 @@ func TestConvert(t *testing.T) {
 		{"01.02.21", "01.02.21", "AAAAAAA", "AMAZON PAYMENTS EUROPE S.C.A.", "SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk", "", "EUR", "200", "S"},
 		{"02.02.21", "02.02.21", "AAAAAAA", "AMAZON PAYMENTS EUROPE S.C.A.", "SEPA-BASISLASTSCHR.\n111-2222222-3333333 AMZN Mk", "", "EUR", "200", "H"},
 	}
-	result := Convert(content, 5, 2)
+	result := Convert(content, 0, 5, 2)
 	fmt.Println(result)
 	assert.NotEmpty(t, result)
 	assert.True(t, len(result) == 3)
 	assert.True(t, len(result[0]) == 4)
-	assert.Equal(t, "01.02.21", result[1][0])
+	assert.Equal(t, "01/02/21", result[1][0])
 	assert.Equal(t, "MVB", result[1][1])
 	assert.Equal(t, "111-2222222-3333333 AMZN Mk", result[1][2])
 	assert.Equal(t, "-200", result[1][3])
