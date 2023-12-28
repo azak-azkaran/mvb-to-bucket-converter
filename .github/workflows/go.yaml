@@ -41,11 +41,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         projectBaseDir: src/github.com/azak-azkaran/mvb-to-bucket-converter
-        args:
-          # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+        args: > 
           -Dsonar.projectKey=azak-azkaran_mvb-to-bucket-converter
           -Dsonar.organization=azak-azkaran-github
-          -Dsonar.projectName="MVB to Bucket Converter"
           -Dsonar.projectVersion=1.0
           -Dsonar.sourceEncoding=UTF-8
           -Dsonar.go.coverage.reportPaths=cover.out
