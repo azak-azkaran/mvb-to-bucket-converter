@@ -36,25 +36,25 @@ jobs:
     - name: SonarCloud Scan
       # You may pin to the exact commit or the version.
       uses: sonarsource/sonarcloud-github-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        projectBaseDir: src/github.com/azak-azkaran/mvb-to-bucket-converter
         args:
           # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
-            
           -Dsonar.projectKey=azak-azkaran_mvb-to-bucket-converter
           -Dsonar.organization=azak-azkaran-github
           -Dsonar.projectName="MVB to Bucket Converter"
           -Dsonar.projectVersion=1.0
-          -Dsonar.sourceEncoding="UTF-8"
+          -Dsonar.sourceEncoding=UTF-8
           -Dsonar.go.coverage.reportPaths=cover.out
           -Dsonar.go.tests.reportPaths=report.json
           -Dsonar.sources=.
-          -Dsonar.exclusions="**/*_test.go,**/vendor/**,*.html,cover.*"
+          -Dsonar.exclusions=**/*_test.go,**/vendor/**,*.html,cover.*
           -Dsonar.tests=.
-          -Dsonar.test.inclusions='**/*_test.go' 
-          -Dsonar.test.exclusions='**/vendor/**,*.html,cover.*' 
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          -Dsonar.test.inclusions=**/*_test.go
+          -Dsonar.test.exclusions=**/vendor/**,*.html,cover.*
   
     - name: Install Coveralls
       env:
