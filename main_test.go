@@ -23,7 +23,7 @@ func TestReadArgs(t *testing.T) {
 func TestReadFile(t *testing.T) {
 	fmt.Println("Testing ReadFiles...")
 
-	err, content, _ , memo, value := ReadFile("./test/testfile.csv")
+	err, content, _, memo, value := ReadFile("./test/testfile.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 2)
@@ -31,7 +31,7 @@ func TestReadFile(t *testing.T) {
 	assert.Equal(t, 2, value)
 	fmt.Println(content)
 
-	err, content, _, memo,value = ReadFile("./test/testfile2.csv")
+	err, content, _, memo, value = ReadFile("./test/testfile2.csv")
 	assert.NoError(t, err)
 	assert.NotNil(t, content)
 	assert.True(t, len(content) >= 1)
@@ -125,9 +125,9 @@ func TestMainTest1(t *testing.T) {
 	assert.Equal(t, "S", content[0][8])
 	assert.Equal(t, "39,05", content[1][7])
 	assert.Equal(t, "S", content[1][8])
-	}
+}
 
-	func TestMainTest2(t *testing.T) {
+func TestMainTest2(t *testing.T) {
 	fmt.Println("Testing2 Main...")
 	t.Cleanup(func() {
 		os.Remove("./test/testfile2.csv_converted.csv")
@@ -159,15 +159,14 @@ func TestMainTest1(t *testing.T) {
 
 	assert.Equal(t, "-4,41", content[1][3])
 	assert.True(t, strings.Contains(content[1][2], "Patreon"), "Message: "+content[1][2])
-	}
+}
 
-	func TestMainTest3(t *testing.T) {
+func TestMainTest3(t *testing.T) {
 	fmt.Println("Testing3 Main...")
 	t.Cleanup(func() {
 		os.Remove("./test/testfile3.csv_converted.csv")
 		os.Remove("./test/testfile3.csv_striped.csv")
 	})
-
 
 	os.Args = []string{
 		"mvb-to-bucket-converter",

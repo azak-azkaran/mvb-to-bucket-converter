@@ -46,7 +46,7 @@ func HandleMemo(line string) string {
 	return memo
 }
 
-func Convert(content [][]string, date_column int,memo_column int, value_column int) [][]string {
+func Convert(content [][]string, date_column int, memo_column int, value_column int) [][]string {
 	var result [][]string
 	result = append(result, []string{"Date", "Payee", "Memo", "Amount"})
 	for _, line := range content {
@@ -59,7 +59,7 @@ func Convert(content [][]string, date_column int,memo_column int, value_column i
 		amount += line[size-value_column]
 
 		test := []string{
-			strings.Replace(line[date_column], ".","/", -1 ),
+			strings.Replace(line[date_column], ".", "/", -1),
 			"MVB",
 			HandleMemo(line[size-memo_column]),
 			amount,
@@ -79,10 +79,10 @@ func ReadFile(filename string) (error, [][]string, int, int, int) {
 	bytes, err := ioutil.ReadAll(file)
 	str := strings.Split(string(bytes), "\n")
 	var memo_column int
-	var value_column int 
+	var value_column int
 	var date_column int
 
-	if strings.Index(str[0], "Bezeichnung Auftragskonto") == 0{
+	if strings.Index(str[0], "Bezeichnung Auftragskonto") == 0 {
 		str = str[1:]
 		memo_column = 9
 		value_column = 8
